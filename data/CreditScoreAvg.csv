@@ -1,0 +1,77 @@
+"","CreditScoreAvg","LoanStatusGroup","count","RName"
+"1",370,"Defaulted",1,1
+"2",430,"Completed",1,2
+"3",430,"Defaulted",4,3
+"4",450,"Completed",4,4
+"5",450,"Defaulted",32,5
+"6",470,"Completed",33,6
+"7",470,"Defaulted",108,7
+"8",490,"Completed",93,8
+"9",490,"Defaulted",253,9
+"10",510,"Completed",203,10
+"11",510,"Defaulted",350,11
+"12",530,"Completed",649,12
+"13",530,"Defaulted",943,13
+"14",550,"Completed",690,14
+"15",550,"Defaulted",784,15
+"16",570,"Completed",700,16
+"17",570,"Defaulted",657,17
+"18",590,"Completed",608,18
+"19",590,"Defaulted",517,19
+"20",610,"Completed",1867,20
+"21",610,"Current",392,21
+"22",610,"Past Due",53,22
+"23",610,"Defaulted",1290,23
+"24",630,"Completed",2176,24
+"25",630,"Current",656,25
+"26",630,"Past Due",74,26
+"27",630,"Defaulted",1266,27
+"28",650,"Completed",4141,28
+"29",650,"Current",5637,29
+"30",650,"Past Due",284,30
+"31",650,"Defaulted",2136,31
+"32",670,"Completed",4238,32
+"33",670,"Current",9872,33
+"34",670,"Past Due",401,34
+"35",670,"Defaulted",1855,35
+"36",690,"Completed",4357,36
+"37",690,"Current",9967,37
+"38",690,"Past Due",344,38
+"39",690,"Defaulted",1824,39
+"40",710,"Completed",3903,40
+"41",710,"Current",9760,41
+"42",710,"Past Due",302,42
+"43",710,"Defaulted",1506,43
+"44",730,"Completed",3804,44
+"45",730,"Current",7691,45
+"46",730,"Past Due",244,46
+"47",730,"Defaulted",1183,47
+"48",750,"Completed",3175,48
+"49",750,"Current",5095,49
+"50",750,"Past Due",167,50
+"51",750,"Defaulted",830,51
+"52",770,"Completed",2624,52
+"53",770,"Current",3270,53
+"54",770,"Past Due",104,54
+"55",770,"Defaulted",608,55
+"56",790,"Completed",1965,56
+"57",790,"Current",2274,57
+"58",790,"Past Due",46,58
+"59",790,"Defaulted",339,59
+"60",810,"Completed",1253,60
+"61",810,"Current",1196,61
+"62",810,"Past Due",32,62
+"63",810,"Defaulted",163,63
+"64",830,"Completed",788,64
+"65",830,"Current",537,65
+"66",830,"Past Due",15,66
+"67",830,"Defaulted",69,67
+"68",850,"Completed",367,68
+"69",850,"Current",185,69
+"70",850,"Defaulted",15,70
+"71",870,"Completed",163,71
+"72",870,"Current",39,72
+"73",870,"Past Due",1,73
+"74",870,"Defaulted",9,74
+"75",890,"Completed",22,75
+"76",890,"Current",5,76

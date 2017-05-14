@@ -1,0 +1,45 @@
+"","ProsperScore","LoanStatusGroup","count","RName"
+"1",1,"Completed",343,1
+"2",1,"Current",337,2
+"3",1,"Past Due",40,3
+"4",1,"Defaulted",272,4
+"5",2,"Completed",871,5
+"6",2,"Current",4196,6
+"7",2,"Past Due",252,7
+"8",2,"Defaulted",447,8
+"9",3,"Completed",1097,9
+"10",3,"Current",5804,10
+"11",3,"Past Due",252,11
+"12",3,"Defaulted",489,12
+"13",4,"Completed",1856,13
+"14",4,"Current",9476,14
+"15",4,"Past Due",360,15
+"16",4,"Defaulted",903,16
+"17",5,"Completed",2237,17
+"18",5,"Current",6222,18
+"19",5,"Past Due",282,19
+"20",5,"Defaulted",1072,20
+"21",6,"Completed",2872,21
+"22",6,"Current",7981,22
+"23",6,"Past Due",327,23
+"24",6,"Defaulted",1098,24
+"25",7,"Completed",2373,25
+"26",7,"Current",7210,26
+"27",7,"Past Due",217,27
+"28",7,"Defaulted",797,28
+"29",8,"Completed",3750,29
+"30",8,"Current",7265,30
+"31",8,"Past Due",233,31
+"32",8,"Defaulted",805,32
+"33",9,"Completed",2849,33
+"34",9,"Current",3612,34
+"35",9,"Past Due",70,35
+"36",9,"Defaulted",380,36
+"37",10,"Completed",1587,37
+"38",10,"Current",3054,38
+"39",10,"Past Due",32,39
+"40",10,"Defaulted",77,40
+"41",11,"Completed",34,41
+"42",11,"Current",1419,42
+"43",11,"Past Due",2,43
+"44",11,"Defaulted",1,44
