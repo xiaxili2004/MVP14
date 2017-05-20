@@ -96,7 +96,7 @@
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);
           setDefaltColor (myChart, MyDefaultColors);
-          myChart.draw();
+          myChart.draw(500);
 
           /* Trying to add percentage label to bars but not successful
           d3.selectAll("svg>g>rect")
@@ -148,7 +148,8 @@
           s.addOrderRule (LoanStatusOrder);          
 
           setDefaltColor (myChart, MyDefaultColors);
-          myChart.draw();
+          myChart.ease = "elastic";
+          myChart.draw(1000);
       }
       
 
