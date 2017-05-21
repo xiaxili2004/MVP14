@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <script src="//d3plus.org/js/d3plus.js"></script>
+
+    <style>
+      circle.dimple-series-1 {
+        fill: "red";
+      }
+
+      h2 {
+        text-align: middle;
+      }
+
+      svg {
+        float:none;
+
+      }
+    </style>
+
+
+
+    <script type="text/javascript">
+      
+      function chart_layout (mychart, pos) {
+      
+        var layout_params = {
+          'main': {"l": 0.1,
+                   "t": 0.2, 
+                   "w": 0.3, 
+                   "h": 0.25},
+
+          'R1': {"l": 0.5,
+                   "t": 0.05, 
+                   "w": 0.4, 
+                   "h": 0.3},
+
+          'R2': {"l": 0.5,
+                   "t": 0.55, 
+                   "w": 0.4, 
+                   "h": 0.3}
+        };
+
+        svg_h = 768;
+        svg_w = 1080;
+
+        mychart.x = layout_params[pos].l * svg_w;
+        mychart.y = layout_params[pos].t * svg_h;
+        mychart.height = layout_params[pos].h * svg_h;
+        mychart.width = layout_params[pos].w * svg_w;
+
+      }
+
+      var LoanStatusOrder = [
+        "Completed", "Current",
+        "Past Due", "Defaulted"      
+        ]
+
+      var MyDefaultColors = [
+      "#2B803E",  "#437983",
+      "#D49E6A",  "#D4746A"
+      ]
+
+      function setDefaltColor (myChart, mycolors) {
+        myChart.defaultColors = mycolors.map (
+          function(e) {
+            return new dimple.color(e);
+          }
+        );
+
+
+      }
+
+
+
+      function drawStatus(data, pos) {
+        /*
+        This function draws bar chart of Loan Status
+        
+        Input: data-pass through function callback
+               svgcanvas- an <svg> element. Use a wrapper function to pass
+        Action: draw an stacked histogram chart grouped by the loan status
+        Output: None
+        */
+          
+          var svgcanvas = d3.select("svg#main")
+          var myChart = new dimple.chart(svgcanvas, data);
+          chart_layout (myChart, "main");
+
+          var x = myChart.addMeasureAxis("x", "count"); 
+          var y = myChart.addCategoryAxis ("y", "LoanStatusGroup");
+          y.addOrderRule (LoanStatusOrder);
+          var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
+          s.addOrderRule (LoanStatusOrder);
+          setDefaltColor (myChart, MyDefaultColors);
+          myChart.draw(1000);
+
+
+          s.afterDraw = function (s, d) {
+            var shape = d3.select(s);
+            var total = d3.sum(data, function(d) {return +d.count;});
+           
+            svg.append("text")
+              .attr("x", parseFloat(shape.attr("x")) + shape.attr("width")*1)
+              .attr("y", parseFloat(shape.attr("y")) + (shape.attr("height") > 30 ? (shape.attr("height") / 2 + 8) : - 10))
+              .style("fill", "black")
+              .text(d3.format(",.1f")(d.xValue / total * 100) + "%");           
+          }
+
+      }
+
+
+
+      function drawLCD(data, pos) {
+        /*
+        This function draws ListingCreationDate vs count
+        
+        Input: data-pass through function callback
+               svgcanvas- an <svg> element. Use a wrapper function to pass
+        Action: draw an stacked histogram chart grouped by the loan status
+        Output: None
+        */
+
+          var svgcanvas = d3.select("svg#main")
+          var myChart = new dimple.chart(svgcanvas, data);
+          chart_layout (myChart, "R1");
+
+          var x = myChart.addTimeAxis("x", "ListingCreationDate.QT", "%Y-%m-%d", "%Y"); 
+          var y = myChart.addMeasureAxis("y", "count");
+          x.dataParseFormat = "%Y-%m-%d";
+          x.tickFormat = "%Y";
+          x.timeInterval = 1;
+          y.title = "Count";
+          s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
+          s.addOrderRule (LoanStatusOrder);          
+
+          setDefaltColor (myChart, MyDefaultColors);
+          myChart.ease = "elastic";
+          myChart.draw(1000);
+      }
+      
+
+      function drawLCDpct(data, pos) {
+        /*
+        This function draws ListingCreationDate vs count
+        
+        Input: data-pass through function callback
+               svgcanvas- an <svg> element. Use a wrapper function to pass
+        Action: draw an stacked histogram chart grouped by the loan status
+        Output: None
+        */
+
+          var svgcanvas = d3.select("svg#main");
+          var myChart = new dimple.chart(svgcanvas, data);
+          chart_layout (myChart, "R2");
+
+          var x = myChart.addTimeAxis("x", "ListingCreationDate.QT", "%Y-%m-%d", "%Y"); 
+          var y = myChart.addPctAxis("y", "count");
+          x.dataParseFormat = "%Y-%m-%d";
+          x.tickFormat = "%Y";
+          x.timeInterval = 1;
+          y.showPercent = true;
+          y.title = "Percentage within the group"
+          var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
+          s.addOrderRule(LoanStatusOrder);
+
+          setDefaltColor (myChart, MyDefaultColors);
+
+          myChart.draw(1000);
+      }
+
+
+      function drawFactor(data, kw, pos) {
+        /*
+        This function draws ListingCreationDate vs count
+        
+        Input: data-pass through function callback
+               svgcanvas- an <svg> element. Use a wrapper function to pass
+        Action: draw an stacked histogram chart grouped by the loan status
+        Output: None
+        */
+
+          if (kw == "ListingCreationDate") {
+
+            drawLCD(data, pos)
+
+          } else {
+
+            var svgcanvas = d3.select("svg#main")
+            var myChart = new dimple.chart(svgcanvas, data);
+            chart_layout (myChart, "R1");
+
+            var x = myChart.addCategoryAxis("x", kw); 
+            x.addOrderRule(function (a, b) {
+              return d3.mean(a.RName) - d3.mean(b.RName);});
+            var y = myChart.addMeasureAxis("y", "count");
+            y.title = "Count";
+            s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
+            s.addOrderRule (LoanStatusOrder);          
+
+            setDefaltColor (myChart, MyDefaultColors);
+            myChart.draw(1000);
+
+          }
+
+      }
+      
+
+      function drawFactorpct(data, kw, pos) {
+        /*
+        This function draws ListingCreationDate vs count
+        
+        Input: data-pass through function callback
+               svgcanvas- an <svg> element. Use a wrapper function to pass
+        Action: draw an stacked histogram chart grouped by the loan status
+        Output: None
+        */
+
+          if (kw == "ListingCreationDate") {
+
+            drawLCDpct(data, pos)
+
+          } else {
+
+        
+            var svgcanvas = d3.select("svg#main");
+            var myChart = new dimple.chart(svgcanvas, data);
+            chart_layout (myChart, "R2");
+
+            var x = myChart.addCategoryAxis("x", kw); 
+            x.addOrderRule(function (a, b) {
+              return d3.mean(a.RName) - d3.mean(b.RName);});
+            var y = myChart.addPctAxis("y", "count");
+            y.showPercent = true;
+            y.title = "Percentage within the group";
+            var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
+            s.addOrderRule(LoanStatusOrder);
+
+            setDefaltColor (myChart, MyDefaultColors);
+
+            myChart.draw(1000);
+          }
+      }
+
+
+
+      function updateCaption(capdata, kw) {
+        /*
+        This function update the caption on the lower left corner
+        
+        Input:  data - recording of the caption
+                kw - the name of the category
+        Action: Display the caption related to specific category
+        Output: None
+        */
+
+        var svgcanvas = d3.select("svg#main");
+        
+        // This works
+        //svgcanvas.selectAll(".caption").remove()
+        
+        function key_func (d) {return d['kw'];}
+
+        var mycap = svgcanvas.selectAll(".caption")
+        .data(capdata.filter(function(d) {return d['kw'] == kw;}), key_func);
+        
+        debugger;
+
+        mycap
+        .enter()
+        .append("text")
+        .attr("class","caption")
+        .attr('x', 20)
+        .attr('y', 550)        
+        .text(function(d) {return d['caption'];})
+
+        mycap
+        .exit()
+        .remove()
+
+        d3plus.textwrap()
+          .container(mycap)
+          .resize(false)
+          .width(400)
+          .draw();        
+
+        
+          
+      }
+
+
+      </script>
+
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+
+  "use strict";
+
+
+
+  var svg = d3.select("body")
+    .append("svg")
+      .attr("width", 1080)
+      .attr("height", 768)
+      .attr("id", "main")
+
+
+  svg.append("text")
+    .attr('x', 20)
+    .attr('y', 20)
+    .text("Prosper Loan Quality Analysis")
+    .attr("font-size",20);
+
+  var ttcapText = "The quality of the loans can be split to four categories: defaulted, past-due, \
+      current, and completed. The distribution of loan quality is related to factors such \
+      as listing date, customer's credit score, and customer's income. "
+
+  var ttcap = svg.append("text")
+    .attr('x', 20)
+    .attr('y', 45)
+    .text(ttcapText)
+
+  d3plus.textwrap()
+    .container(ttcap)
+    .resize(false)
+    .width(400)
+    .draw();
+
+
+
+  var btx = 20;
+  var bty = 440
+
+
+  svg.append("text")
+    .attr('x', btx)
+    .attr('y', bty - 30)
+    .text("Click below to show correlations!")
+    .attr("font-size",20);
+
+  var buttonNames = [
+  {cp: "Listing Creation Date", txt: "ListingCreationDate", x: btx, y: bty},
+  {cp: "Credit Score", txt: "CreditScoreAvg", x: btx, y: bty+20},
+  {cp: "Stated Monthly Income", txt: "StatedMonthlyIncome", x: btx, y: bty+40},
+  {cp: "Debt-to-income Ratio", txt: "DebtToIncomeRatio", x: btx + 200, y: bty},
+  {cp: "Prosper Score", txt: "ProsperScore", x: btx + 200, y: bty+20}, 
+  {cp: "APR of the Loan", txt: "BorrowerAPR", x: btx + 200, y: bty+40}]
+
+
+  var buttons = svg.selectAll(".button")
+  .data(buttonNames)
+  .enter()
+  .append("text")
+  .attr("class","button")
+  .attr('transform', function(d, i) { return 'translate(' + d.x + ',' + d.y + ')';})
+  .text(function(d) {return d.cp;})
+
+
+    d3.csv("LoanStatus.csv"  , function (data){
+      return drawStatus(data, "main");
+    });
+
+  
+ 
+  function update (category) {
+
+    var refresh_seed = '?' + Math.floor(Math.random() * 1000);
+
+    svg.selectAll('svg>g').filter(function(d,i) {return i != 0; } ).remove();
+
+    d3.csv(category +".csv" + refresh_seed, function (data){
+      return drawFactor(data, category, "R1");
+    });
+
+    d3.csv(category +".csv" + refresh_seed, function (data){
+      return drawFactorpct(data, category, "R2");
+    });
+
+    d3.csv("caption.csv", function (data) {
+      return updateCaption (data, category);
+    });
+
+
+  }  
+
+//  update('DebtToIncomeRatio');
+
+  function fieldclick (d) {
+      d3.selectAll("svg>text.button")
+        .style("fill", "black");
+      d3.select(this)
+        .transition()
+        .duration(500)
+        .style("fill", "red");
+      update(d.txt);
+  }
+
+  buttons.on("click", fieldclick);
+
+
+
+  </script>
+</body>
+</html>
