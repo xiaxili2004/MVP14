@@ -96,32 +96,22 @@
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);
           setDefaltColor (myChart, MyDefaultColors);
-          myChart.draw(500);
+          myChart.draw(1000);
 
-          /* Trying to add percentage label to bars but not successful
-          d3.selectAll("svg>g>rect")
-            .each(function (d, i) {
-              var rect = {
-                x: +d3.select(this).attr("x"),
-                y: +d3.select(this).attr("y"),
-                w: +d3.select(this).attr("width"),
-                h: +d3.select(this).attr("height")
-              }
-              d3.select("svg>g")
-                .append("text")
-                .attr("x", rect.x + rect.w)
-                .attr("y", rect.y + rect.h/2)
-                .attr("class", "pctLabel")
-            })
 
-          d3.selectAll("svg>g>text.pctLabel")
-            .data(data)
-            .enter()
-            .append("text")
-            .text(function (d) {return d.pct;})
-          */
+          s.afterDraw = function (s, d) {
+            var shape = d3.select(s);
+            var total = d3.sum(data, function(d) {return +d.count;});
+           
+            svg.append("text")
+              .attr("x", parseFloat(shape.attr("x")) + shape.attr("width")*1)
+              .attr("y", parseFloat(shape.attr("y")) + (shape.attr("height") > 30 ? (shape.attr("height") / 2 + 8) : - 10))
+              .style("fill", "black")
+              .text(d3.format(",.1f")(d.xValue / total * 100) + "%");           
+          }
 
       }
+
 
 
       function drawLCD(data, pos) {
@@ -179,7 +169,7 @@
 
           setDefaltColor (myChart, MyDefaultColors);
 
-          myChart.draw();
+          myChart.draw(1000);
       }
 
 
@@ -212,7 +202,7 @@
             s.addOrderRule (LoanStatusOrder);          
 
             setDefaltColor (myChart, MyDefaultColors);
-            myChart.draw();
+            myChart.draw(1000);
 
           }
 
@@ -251,7 +241,7 @@
 
             setDefaltColor (myChart, MyDefaultColors);
 
-            myChart.draw();
+            myChart.draw(1000);
           }
       }
 
@@ -269,21 +259,23 @@
 
         var svgcanvas = d3.select("svg#main");
         
+        // This works
+        svgcanvas.selectAll(".caption").remove()
+        
         function key_func (d) {return d['kw'];}
 
         var mycap = svgcanvas.selectAll(".caption")
-        .data(capdata.filter(function(d) {return d['kw'] == kw;}, key_func))
+        .data(capdata.filter(function(d) {return d['kw'] == kw;}))
         
-        mycap.enter()
+        debugger;
+
+        mycap
+        .enter()
         .append("text")
         .attr("class","caption")
         .attr('x', 20)
         .attr('y', 550)        
         .text(function(d) {return d['caption'];})
-
-        debugger;
-        mycap.exit().remove();
-
 
         d3plus.textwrap()
           .container(mycap)

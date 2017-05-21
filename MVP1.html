@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
-  <script src="//d3plus.org/js/d3plus.js"></script>
 
     <style>
       circle.dimple-series-1 {
@@ -28,10 +27,10 @@
       function chart_layout (mychart, pos) {
       
         var layout_params = {
-          'main': {"l": 0.1,
-                   "t": 0.2, 
-                   "w": 0.3, 
-                   "h": 0.25},
+          'main': {"l": 0.05,
+                   "t": 0.15, 
+                   "w": 0.35, 
+                   "h": 0.5},
 
           'R1': {"l": 0.5,
                    "t": 0.05, 
@@ -95,32 +94,9 @@
           y.addOrderRule (LoanStatusOrder);
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);
+
           setDefaltColor (myChart, MyDefaultColors);
           myChart.draw();
-
-          /* Trying to add percentage label to bars but not successful
-          d3.selectAll("svg>g>rect")
-            .each(function (d, i) {
-              var rect = {
-                x: +d3.select(this).attr("x"),
-                y: +d3.select(this).attr("y"),
-                w: +d3.select(this).attr("width"),
-                h: +d3.select(this).attr("height")
-              }
-              d3.select("svg>g")
-                .append("text")
-                .attr("x", rect.x + rect.w)
-                .attr("y", rect.y + rect.h/2)
-                .attr("class", "pctLabel")
-            })
-
-          d3.selectAll("svg>g>text.pctLabel")
-            .data(data)
-            .enter()
-            .append("text")
-            .text(function (d) {return d.pct;})
-          */
-
       }
 
 
@@ -139,11 +115,10 @@
           chart_layout (myChart, "R1");
 
           var x = myChart.addTimeAxis("x", "ListingCreationDate.QT", "%Y-%m-%d", "%Y"); 
-          var y = myChart.addMeasureAxis("y", "count");
+          myChart.addMeasureAxis("y", "count");
           x.dataParseFormat = "%Y-%m-%d";
           x.tickFormat = "%Y";
           x.timeInterval = 1;
-          y.title = "Count";
           s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);          
 
@@ -162,6 +137,9 @@
         Output: None
         */
 
+
+
+
           var svgcanvas = d3.select("svg#main");
           var myChart = new dimple.chart(svgcanvas, data);
           chart_layout (myChart, "R2");
@@ -172,7 +150,6 @@
           x.tickFormat = "%Y";
           x.timeInterval = 1;
           y.showPercent = true;
-          y.title = "Percentage within the group"
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule(LoanStatusOrder);
 
@@ -205,8 +182,7 @@
             var x = myChart.addCategoryAxis("x", kw); 
             x.addOrderRule(function (a, b) {
               return d3.mean(a.RName) - d3.mean(b.RName);});
-            var y = myChart.addMeasureAxis("y", "count");
-            y.title = "Count";
+            myChart.addMeasureAxis("y", "count");
             s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
             s.addOrderRule (LoanStatusOrder);          
 
@@ -244,7 +220,6 @@
               return d3.mean(a.RName) - d3.mean(b.RName);});
             var y = myChart.addPctAxis("y", "count");
             y.showPercent = true;
-            y.title = "Percentage within the group";
             var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
             s.addOrderRule(LoanStatusOrder);
 
@@ -252,46 +227,6 @@
 
             myChart.draw();
           }
-      }
-
-
-
-      function updateCaption(capdata, kw) {
-        /*
-        This function update the caption on the lower left corner
-        
-        Input:  data - recording of the caption
-                kw - the name of the category
-        Action: Display the caption related to specific category
-        Output: None
-        */
-
-        var svgcanvas = d3.select("svg#main");
-        
-        function key_func (d) {return d['kw'];}
-
-        var mycap = svgcanvas.selectAll(".caption")
-        .data(capdata.filter(function(d) {return d['kw'] == kw;}, key_func))
-        
-        mycap.enter()
-        .append("text")
-        .attr("class","caption")
-        .attr('x', 20)
-        .attr('y', 550)        
-        .text(function(d) {return d['caption'];})
-
-        debugger;
-        mycap.exit().remove();
-
-
-        d3plus.textwrap()
-          .container(mycap)
-          .resize(false)
-          .width(400)
-          .draw();        
-
-        
-          
       }
 
 
@@ -319,43 +254,26 @@
   svg.append("text")
     .attr('x', 20)
     .attr('y', 20)
-    .text("Prosper Loan Quality Analysis")
-    .attr("font-size",20);
-
-  var ttcapText = "The quality of the loans can be split to four categories: defaulted, past-due, \
-      current, and completed. The distribution of loan quality is related to factors such \
-      as listing date, customer's credit score, and customer's income. "
-
-  var ttcap = svg.append("text")
-    .attr('x', 20)
-    .attr('y', 45)
-    .text(ttcapText)
-
-  d3plus.textwrap()
-    .container(ttcap)
-    .resize(false)
-    .width(400)
-    .draw();
+    .text("Prosper Loan Quality Analysis");
 
 
+//  svg.append("text")
+//    .attr('x', 20)
+//    .attr('y', 40)
+//    .attr('width', 200)
+//    .text("The quality of the loans can be split to four categories: defaulted, past-due, \
+//      current, and completed. The distribution of loan quality is related to factors such \
+//      as listing date, customer's credit score, and customer's income. ");
 
-  var btx = 20;
-  var bty = 440
 
-
-  svg.append("text")
-    .attr('x', btx)
-    .attr('y', bty - 30)
-    .text("Click below to show correlations!")
-    .attr("font-size",20);
 
   var buttonNames = [
-  {cp: "Listing Creation Date", txt: "ListingCreationDate", x: btx, y: bty},
-  {cp: "Credit Score", txt: "CreditScoreAvg", x: btx, y: bty+20},
-  {cp: "Stated Monthly Income", txt: "StatedMonthlyIncome", x: btx, y: bty+40},
-  {cp: "Debt-to-income Ratio", txt: "DebtToIncomeRatio", x: btx + 200, y: bty},
-  {cp: "Prosper Score", txt: "ProsperScore", x: btx + 200, y: bty+20}, 
-  {cp: "APR of the Loan", txt: "BorrowerAPR", x: btx + 200, y: bty+40}]
+  {txt: "ListingCreationDate", x: 50, y: 600},
+  {txt: "CreditScoreAvg", x: 50, y: 620},
+  {txt: "IncomeRange", x: 50, y: 640},
+  {txt: "DebtToIncomeRatio", x: 50, y: 660},
+  {txt: "ProsperScore", x: 50, y: 680}, 
+  {txt: "BorrowerAPR", x: 50, y: 700}]
 
 
   var buttons = svg.selectAll(".button")
@@ -364,12 +282,7 @@
   .append("text")
   .attr("class","button")
   .attr('transform', function(d, i) { return 'translate(' + d.x + ',' + d.y + ')';})
-  .text(function(d) {return d.cp;})
-
-
-    d3.csv("LoanStatus.csv"  , function (data){
-      return drawStatus(data, "main");
-    });
+  .text(function(d) {return d.txt;})
 
   
  
@@ -377,7 +290,12 @@
 
     var refresh_seed = '?' + Math.floor(Math.random() * 1000);
 
-    svg.selectAll('svg>g').filter(function(d,i) {return i != 0; } ).remove();
+    svg.selectAll('svg>g').remove()
+
+
+    d3.csv("LoanStatus.csv" + refresh_seed , function (data){
+      return drawStatus(data, "main");
+    });
 
     d3.csv(category +".csv" + refresh_seed, function (data){
       return drawFactor(data, category, "R1");
@@ -386,27 +304,18 @@
     d3.csv(category +".csv" + refresh_seed, function (data){
       return drawFactorpct(data, category, "R2");
     });
-
-    d3.csv("caption.csv", function (data) {
-      return updateCaption (data, category);
-    });
-
-
   }  
 
-//  update('DebtToIncomeRatio');
+  update('DebtToIncomeRatio');
 
-  function fieldclick (d) {
-      d3.selectAll("svg>text.button")
-        .style("fill", "black");
+  buttons.on("click", function(d) {
       d3.select(this)
         .transition()
         .duration(500)
-        .style("fill", "red");
+        .style("background", "lightBlue")
+        .style("color", "white");
       update(d.txt);
-  }
-
-  buttons.on("click", fieldclick);
+  });
 
 
 
