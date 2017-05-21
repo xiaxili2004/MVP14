@@ -14,7 +14,7 @@ This visualization attempts to illustrate various factors that determine the qua
 
 The infograph needs to have bar chart to show readers the general status of all loans issued, and the loan status needs to be broken down as function of different categories such as credit score. As shown in the following picture.
 
-
+![Design Sketch](https://github.com/xiaxili2004/ProsperLoanAnalytics-XiaxiLi/blob/master/sketch.png)
 
  
 **The MVP1**
@@ -24,6 +24,7 @@ This minimum viable product shows the following functions
 	2. Stacked bar chart using different factors (list creation date, loan APR, etc.) as X, count/percentage as Y, and grouped by loan status by different colors.
 	3. Buttons on the lower left corner, which can be clicked to switch the indicator (X) on the right panel.
 
+![MVP1 Screen Clip](https://github.com/xiaxili2004/ProsperLoanAnalytics-XiaxiLi/blob/master/MVP1.png)
 
 ### Feedback ###
 
@@ -68,6 +69,8 @@ Feedbacks are collected on MVP 1.
 	* Remove NA from data
 	* Highlight selected category
 
+
+![MVP 2 Screen Clip](https://github.com/xiaxili2004/ProsperLoanAnalytics-XiaxiLi/blob/master/MVP2.png)
 
  
 **Project repository**
