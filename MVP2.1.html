@@ -106,10 +106,6 @@
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);
           setDefaltColor (myChart, MyDefaultColors);
-
-          x.title = 'Number of Loan Records';
-          y.title = "Loan Status Types";
-
           myChart.draw(1000);
 
           // The afterDraw function place percentage labels on the bars
@@ -128,7 +124,7 @@
 
 
 
-      function drawLCD(data, kw, pos) {
+      function drawLCD(data, pos) {
         /*
         This function draws ListingCreationDate vs count
         
@@ -147,9 +143,7 @@
           x.dataParseFormat = "%Y-%m-%d";
           x.tickFormat = "%Y";
           x.timeInterval = 1;
-          x.title = buttonNames.filter(function(d) {return d['txt'] == kw;})[0].cp;
-
-          y.title = "Number of Loan Records";
+          y.title = "Count";
           s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule (LoanStatusOrder);          
 
@@ -159,7 +153,7 @@
       }
       
 
-      function drawLCDpct(data, kw, pos) {
+      function drawLCDpct(data, pos) {
         /*
         This function draws ListingCreationDate vs count, using percentage scale
         
@@ -179,9 +173,7 @@
           x.tickFormat = "%Y";
           x.timeInterval = 1;
           y.showPercent = true;
-          y.title = "Percentage of Records within each group";
-          x.title = buttonNames.filter(function(d) {return d['txt'] == kw;})[0].cp;
-
+          y.title = "Percentage within the group"
           var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
           s.addOrderRule(LoanStatusOrder);
 
@@ -207,7 +199,7 @@
         // if the x is a timestamp, we need  to use another function to process
           if (kw == "ListingCreationDate") {
 
-            drawLCD(data, kw, pos)
+            drawLCD(data, pos)
 
           } else {
 
@@ -218,10 +210,8 @@
             var x = myChart.addCategoryAxis("x", kw); 
             x.addOrderRule(function (a, b) {
               return d3.mean(a.RName) - d3.mean(b.RName);});
-            x.title = buttonNames.filter(function(d) {return d['txt'] == kw;})[0].cp;
-
             var y = myChart.addMeasureAxis("y", "count");
-            y.title = "Number of Loan Records";
+            y.title = "Count";
             s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
             s.addOrderRule (LoanStatusOrder);          
 
@@ -249,7 +239,7 @@
         // if the x is a timestamp, we need  to use another function to process
           if (kw == "ListingCreationDate") {
 
-            drawLCDpct(data, kw, pos)
+            drawLCDpct(data, pos)
 
           } else {
 
@@ -261,14 +251,9 @@
             var x = myChart.addCategoryAxis("x", kw); 
             x.addOrderRule(function (a, b) {
               return d3.mean(a.RName) - d3.mean(b.RName);});
-
-            debugger;
-            x.title = buttonNames.filter(function(d) {return d['txt'] == kw;})[0].cp;
-            
-
             var y = myChart.addPctAxis("y", "count");
             y.showPercent = true;
-            y.title = "Percentage of Records within each group";
+            y.title = "Percentage within the group";
             var s = myChart.addSeries("LoanStatusGroup", dimple.plot.bar);
             s.addOrderRule(LoanStatusOrder);
 
@@ -354,7 +339,7 @@
 
   debugger;
   var ttcapText = "The quality of the loans can be split to four categories: completed, current, \
-      past-due (missed payment for 0-180 days), and defaulted (past-due > 180 days triggering charging-off). \
+      passed-due (missed payment for 0-180 days), and defaulted (passed-due > 180 days triggering charging-off). \
       The distribution of loan quality is related to different factors such \
       as listing date, customer's credit score, and customer's income. "
 

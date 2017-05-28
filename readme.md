@@ -72,6 +72,16 @@ Feedbacks are collected on MVP 1.
 
 ![MVP 2 Screen Clip](https://github.com/xiaxili2004/ProsperLoanAnalytics-XiaxiLi/blob/master/MVP2.png)
 
+
+**Changes made for MVP2.2:**
+1. Codes comments improved: all functions are commented, and key steps in creation of elements in svg container are also commented. Redundant codes are removed.
+2. The X and Y labels are fixed: instead of using the name of the field (containing no space in between words), the corresponding field caption (d['cp']) are used.
+3. The color of the selected button is changed to black, and the un-selected buttons changed to grey.
+4. More explanation added to clarify the four status (especially for past-due), and the ranking of Prosper score.
+
+![MVP 2.2 Screen Clip](https://github.com/xiaxili2004/ProsperLoanAnalytics-XiaxiLi/blob/master/MVP2.2.png)
+
+
  
 **Project repository**
 
